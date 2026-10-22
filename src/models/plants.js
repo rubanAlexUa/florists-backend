@@ -1,35 +1,44 @@
 import { Schema, model } from 'mongoose';
 import { PRODUCTS_TYPES } from '../constants/productsTypes.js';
+import { PRODUCTS_STATES } from '../constants/productStates.js';
 
 export const plantSchema = new Schema({
   name: {
     type: String,
     trim: true,
-    require: true,
+    required: true,
   },
   description: {
     type: String,
     trim: true,
-    require: true,
+    required: true,
   },
   price: {
     type: Number,
-    trim: true,
-    require: true,
+    required: true,
   },
   amount: {
     type: Number,
-    trim: true,
-    require: true,
+    required: true,
   },
   rating: {
     type: Number,
-    trim: true,
-    require: true,
+    required: true,
   },
   type: {
     type: String,
     enum: PRODUCTS_TYPES,
+    required: true,
+  },
+  sellerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  state: {
+    type: String,
+    enum: PRODUCTS_STATES,
+    required: true,
   },
 });
 
