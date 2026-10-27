@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import { Bouquet } from '../models/bouquets.js';
 import { Plant } from '../models/plants.js';
+import { saveFileToCloudinary } from '../../utils/saveFileToCloudinary.js';
 
 export const getAllBouquets = async (req, res) => {
   const { page = 1, perPage = 10 } = req.query;
@@ -43,6 +44,11 @@ export const createBouquet = async (req, res) => {
   }
 
   const { flowers } = req.body;
+  const { file } = req;
+
+  if (!file) {
+    throw createHttpError(400, 'No file ');
+  }
 
   let price = 100;
 
@@ -59,8 +65,12 @@ export const createBouquet = async (req, res) => {
     price += plant.price * flower.amount;
   }
 
+  const result = await saveFileToCloudinary(req.file.buffer, req.user._id);
+  const productImage = result.secure_url;
+
   const bouquet = await Bouquet.create({
     ...req.body,
+    productImage,
     price,
     sellerId: req.user._id,
   });
@@ -70,12 +80,20 @@ export const createBouquet = async (req, res) => {
 
 export const updateBouquet = async (req, res) => {
   const { bouquet_id } = req.params;
+
+  const data = { ...req.body };
+
+  if (req.file) {
+    const result = await saveFileToCloudinary(req.file.buffer, req.user._id);
+    data.productImage = result.secure_url;
+  }
+
   const bouquet = await Bouquet.findOneAndUpdate(
     {
       _id: bouquet_id,
       sellerId: req.user._id,
     },
-    req.body,
+    data,
     { returnDocument: 'after' },
   );
 

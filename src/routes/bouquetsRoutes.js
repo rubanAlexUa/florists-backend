@@ -15,6 +15,8 @@ import {
   updateBouquetSchema,
 } from '../validations/bouquetsValidation.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
+import { parseFlowers } from '../middlewares/parseFlowers.js';
 
 const router = Router();
 
@@ -29,13 +31,17 @@ router.get(
 router.post(
   '/bouquets',
   authenticate,
+  upload.single('productImage'),
+  parseFlowers,
   celebrate(createBouquetSchema),
   createBouquet,
 );
 
 router.patch(
-  '/boquets/:bouquet_id',
+  '/bouquets/:bouquet_id',
   authenticate,
+  upload.single('productImage'),
+  parseFlowers,
   celebrate(updateBouquetSchema),
   updateBouquet,
 );

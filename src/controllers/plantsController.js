@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import { Plant } from '../models/plants.js';
 import { Bouquet } from '../models/bouquets.js';
+import { saveFileToCloudinary } from '../../utils/saveFileToCloudinary.js';
 
 export const getAllPlants = async (req, res) => {
   const { page = 1, perPage = 10, type } = req.query;
@@ -42,14 +43,25 @@ export const getPlantById = async (req, res) => {
 };
 
 export const createPlant = async (req, res) => {
-  if (req.user.role === 'customer') {
+  const { user, file } = req;
+
+  if (user.role === 'customer') {
     throw createHttpError(403, 'Not wvailable function');
   }
 
+  if (!file) {
+    throw createHttpError(400, 'No file ');
+  }
+
+  const result = await saveFileToCloudinary(req.file.buffer, user._id);
+  const productImage = result.secure_url;
+
   const plant = await Plant.create({
     ...req.body,
-    sellerId: req.user._id,
+    productImage,
+    sellerId: user._id,
     rating: 0,
+    state: 'active',
   });
 
   res.status(201).json(plant);
@@ -57,9 +69,17 @@ export const createPlant = async (req, res) => {
 
 export const updatePlant = async (req, res) => {
   const { plant_id } = req.params;
+
+  const data = { ...req.body };
+
+  if (req.file) {
+    const result = await saveFileToCloudinary(req.file.buffer, req.user._id);
+    data.productImage = result.secure_url;
+  }
+
   const plant = await Plant.findOneAndUpdate(
     { _id: plant_id, sellerId: req.user._id },
-    req.body,
+    data,
     { returnDocument: 'after' },
   );
 

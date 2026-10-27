@@ -40,6 +40,10 @@ export const plantSchema = new Schema({
     enum: PRODUCTS_STATES,
     required: true,
   },
+  productImage: {
+    type: String,
+    required: true,
+  },
 });
 
 plantSchema.index({ type: 1 });

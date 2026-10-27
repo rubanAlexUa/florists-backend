@@ -5,11 +5,13 @@ import {
   getAllPurchases,
   getPurchaseById,
   createPurchase,
+  deletePurchase,
 } from '../controllers/purchasesController.js';
 import {
   getAllPurchasesSchema,
   purchaseIdSchema,
   createPurchaseSchema,
+  deletePurchaseSchema,
 } from '../validations/purchasesValidator.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
@@ -25,6 +27,12 @@ router.get(
   getPurchaseById,
 );
 
-router.post('/purchases/add', celebrate(createPurchaseSchema), createPurchase);
+router.post('/purchases', celebrate(createPurchaseSchema), createPurchase);
+
+router.patch(
+  '/purchase/:purchase_id',
+  celebrate(deletePurchaseSchema),
+  deletePurchase,
+);
 
 export default router;

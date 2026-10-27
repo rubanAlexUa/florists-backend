@@ -36,6 +36,12 @@ const purchaseSchema = new Schema(
       ref: 'User',
       required: true,
     },
+    // state: {
+    //   type: String,
+    //   valid: ORDER_STATES,
+    //   default: 'pending',
+    //   required: true,
+    // },
   },
   { timestamps: true },
 );

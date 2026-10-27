@@ -44,6 +44,10 @@ const bouquetSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  productImage: {
+    type: String,
+    required: true,
+  },
 });
 
 export const Bouquet = model('Bouquet', bouquetSchema);

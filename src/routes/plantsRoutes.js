@@ -15,17 +15,25 @@ import {
   updatePlantSchema,
 } from '../validations/plantsValidation.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = Router();
 
 router.get('/plants', celebrate(getAllPlantsSchema), getAllPlants);
 router.get('/plants/:plant_id', celebrate(plantIdSchema), getPlantById);
 
-router.post('/plants', authenticate, celebrate(createPlantSchema), createPlant);
+router.post(
+  '/plants',
+  authenticate,
+  upload.single('productImage'),
+  celebrate(createPlantSchema),
+  createPlant,
+);
 
 router.patch(
   '/plants/:plant_id',
   authenticate,
+  upload.single('productImage'),
   celebrate(updatePlantSchema),
   updatePlant,
 );

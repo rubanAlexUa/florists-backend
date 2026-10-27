@@ -17,21 +17,38 @@ export const purchaseIdSchema = {
     purchase_id: Joi.string().custom(objectIdValidator).required(),
   }),
 };
-
 export const createPurchaseSchema = {
+  [Segments.BODY]: Joi.array()
+    .items({
+      productId: Joi.string().custom(objectIdValidator).required(),
+      amount: Joi.number().integer().required(),
+    })
+    .min(1)
+    .required(),
+};
+// export const createPurchaseSchema = {
+//   [Segments.BODY]: Joi.object({
+//     products: Joi.array()
+//       .items(
+//         Joi.object({
+//           productId: Joi.string().custom(objectIdValidator).required(),
+//           name: Joi.string().trim().required(),
+//           price: Joi.number().positive().required(),
+//           amount: Joi.number().integer().min(1).required(),
+//         }),
+//       )
+//       .min(1)
+//       .required(),
+//     totalProducts: Joi.number().min(1).required(),
+//     totalPrice: Joi.number().positive().required(),
+//   }),
+// };
+
+export const deletePurchaseSchema = {
+  [Segments.PARAMS]: Joi.object({
+    purchase_id: Joi.string().custom(objectIdValidator).required(),
+  }),
   [Segments.BODY]: Joi.object({
-    products: Joi.array()
-      .items(
-        Joi.object({
-          productId: Joi.string().custom(objectIdValidator).required(),
-          name: Joi.string().trim().required(),
-          price: Joi.number().positive().required(),
-          amount: Joi.number().integer().min(1).required(),
-        }),
-      )
-      .min(1)
-      .required(),
-    totalProducts: Joi.number().min(1).required(),
-    totalPrice: Joi.number().positive().required(),
+    status: Joi.string().valid('cancelled').required(),
   }),
 };

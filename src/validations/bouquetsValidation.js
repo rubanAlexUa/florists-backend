@@ -51,5 +51,5 @@ export const updateBouquetSchema = {
         }),
       )
       .min(1),
-  }).min(1),
+  }),
 };

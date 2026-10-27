@@ -46,5 +46,5 @@ export const updatePlantSchema = {
     type: Joi.string().valid(...PRODUCTS_TYPES),
     price: Joi.number().integer().min(1),
     amount: Joi.number().integer().min(0),
-  }).min(1),
+  }),
 };
