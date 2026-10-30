@@ -75,6 +75,7 @@ export const createBouquet = async (req, res) => {
     productImage,
     price,
     sellerId: req.user._id,
+    state: 'active',
   });
 
   await bouquet.populate('flowers.plantId');
