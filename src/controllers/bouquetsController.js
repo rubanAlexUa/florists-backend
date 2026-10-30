@@ -12,7 +12,7 @@ export const getAllBouquets = async (req, res) => {
 
   const [totalBouquets, bouquets] = await Promise.all([
     bouquetsQuery.clone().countDocuments(),
-    bouquetsQuery.skip(skip).limit(perPage),
+    bouquetsQuery.skip(skip).limit(perPage).populate('sellerId', 'username'),
   ]);
 
   const totalPages = Math.ceil(totalBouquets / perPage);
@@ -29,7 +29,10 @@ export const getAllBouquets = async (req, res) => {
 export const getBouquetById = async (req, res) => {
   const { bouquet_id } = req.params;
 
-  const bouquet = await Bouquet.findOne({ _id: bouquet_id });
+  const bouquet = await Bouquet.findOne({ _id: bouquet_id }).populate(
+    'sellerId',
+    'username',
+  );
 
   if (!bouquet) {
     throw createHttpError(404, 'Not found flower');

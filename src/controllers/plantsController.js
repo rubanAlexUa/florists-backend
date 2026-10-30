@@ -16,7 +16,7 @@ export const getAllPlants = async (req, res) => {
 
   const [totalPlants, plants] = await Promise.all([
     plantsQuery.clone().countDocuments(),
-    plantsQuery.skip(skip).limit(perPage),
+    plantsQuery.skip(skip).limit(perPage).populate('sellerId', 'username'),
   ]);
 
   const totalPages = Math.ceil(totalPlants / perPage);
@@ -33,7 +33,10 @@ export const getAllPlants = async (req, res) => {
 export const getPlantById = async (req, res) => {
   const { plant_id } = req.params;
 
-  const plant = await Plant.findOne({ _id: plant_id });
+  const plant = await Plant.findOne({ _id: plant_id }).populate(
+    'sellerId',
+    'username',
+  );
 
   if (!plant) {
     throw createHttpError(404, 'Not found flower');
