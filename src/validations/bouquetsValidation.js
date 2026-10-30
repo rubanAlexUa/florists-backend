@@ -25,7 +25,6 @@ export const createBouquetSchema = {
     flowers: Joi.array()
       .items(
         Joi.object({
-          name: Joi.string().required(),
           amount: Joi.number().integer().min(1).required(),
           plantId: Joi.string().custom(objectIdValidator).required(),
         }),

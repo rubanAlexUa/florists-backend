@@ -29,10 +29,9 @@ export const getAllBouquets = async (req, res) => {
 export const getBouquetById = async (req, res) => {
   const { bouquet_id } = req.params;
 
-  const bouquet = await Bouquet.findOne({ _id: bouquet_id }).populate(
-    'sellerId',
-    'username',
-  );
+  const bouquet = await Bouquet.findOne({ _id: bouquet_id })
+    .populate('sellerId', 'username')
+    .populate('flowers.plantId');
 
   if (!bouquet) {
     throw createHttpError(404, 'Not found flower');
@@ -77,6 +76,8 @@ export const createBouquet = async (req, res) => {
     price,
     sellerId: req.user._id,
   });
+
+  await bouquet.populate('flowers.plantId');
 
   res.status(201).json(bouquet);
 };

@@ -18,18 +18,14 @@ const bouquetSchema = new Schema({
   },
   flowers: [
     {
-      name: {
-        type: String,
-        trim: true,
-        required: true,
-      },
       amount: {
         type: Number,
-        trim: true,
+        min: 1,
         required: true,
       },
       plantId: {
         type: Schema.Types.ObjectId,
+        ref: 'Plant',
         required: true,
       },
     },
