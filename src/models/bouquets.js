@@ -30,6 +30,10 @@ const bouquetSchema = new Schema({
       },
     },
   ],
+  rating: {
+    type: Number,
+    required: true,
+  },
   state: {
     type: String,
     enum: PRODUCTS_STATES,
