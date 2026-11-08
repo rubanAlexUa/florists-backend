@@ -18,6 +18,7 @@ export const registerUser = async (req, res) => {
 
   const newUser = await User.create({
     email,
+    username,
     password: hashedPassword,
     role,
   });
