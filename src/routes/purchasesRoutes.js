@@ -30,7 +30,7 @@ router.get(
 router.post('/purchases', celebrate(createPurchaseSchema), createPurchase);
 
 router.patch(
-  '/purchase/:purchase_id',
+  '/purchases/:purchase_id',
   celebrate(deletePurchaseSchema),
   deletePurchase,
 );
