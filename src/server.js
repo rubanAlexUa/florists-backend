@@ -15,6 +15,7 @@ import purchasesRoutes from './routes/purchasesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import ordersRoutes from './routes/ordersRoutes.js';
 import myProductsRoutes from './routes/myProductsRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -30,6 +31,7 @@ app.use(bouquetsRoutes);
 app.use(purchasesRoutes);
 app.use(ordersRoutes);
 app.use(myProductsRoutes);
+app.use(userRoutes);
 
 app.use(notFoundHandler);
 

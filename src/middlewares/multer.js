@@ -10,7 +10,6 @@ export const upload = multer({
       'image/gif',
       'image/png',
       'image/webp',
-      'image/jfif',
     ];
 
     if (allowedTypes.includes(file.mimetype)) {
