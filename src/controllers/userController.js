@@ -15,5 +15,5 @@ export const getUserById = async (req, res) => {
     throw createHttpError(404, 'User not found');
   }
 
-  res.status(200).json({ customerName: customer.name });
+  res.status(200).json({ customerName: customer.username });
 };
