@@ -3,6 +3,7 @@ import { Purchase } from '../models/purchases.js';
 import { Plant } from '../models/plants.js';
 import { Bouquet } from '../models/bouquets.js';
 import { Order } from '../models/orders.js';
+import { syncArchive } from '../service/syncArchive.js';
 
 export const getAllPurchases = async (req, res) => {
   const purchases = await Purchase.find({ userId: req.user._id });
@@ -118,6 +119,8 @@ export const createPurchase = async (req, res) => {
   for (const [plantId, qty] of Object.entries(needs)) {
     await Plant.updateOne({ _id: plantId }, { $inc: { amount: -qty } });
   }
+
+  await syncArchive(Object.keys(needs));
 
   res.status(201).json(purchase);
 };

@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import { Plant } from '../models/plants.js';
 import { Bouquet } from '../models/bouquets.js';
 import { saveFileToCloudinary } from '../../utils/saveFileToCloudinary.js';
+import { syncArchive } from '../service/syncArchive.js';
 
 export const getAllPlants = async (req, res) => {
   const { page = 1, perPage = 10, type } = req.query;
@@ -90,7 +91,13 @@ export const updatePlant = async (req, res) => {
     throw createHttpError(404, 'Plant not found');
   }
 
-  res.status(200).json(plant);
+  if (data.amount !== undefined) {
+    await syncArchive([plant._id]);
+  }
+
+  const updatedPlant = await Plant.findById(plant._id);
+
+  res.status(200).json(updatedPlant);
 };
 
 export const deletePlant = async (req, res) => {

@@ -47,7 +47,7 @@ router.patch(
 );
 
 router.delete(
-  'bouquets/:bouquet_id',
+  '/bouquets/:bouquet_id',
   authenticate,
   celebrate(bouquetIdValidator),
   deleteBouquet,

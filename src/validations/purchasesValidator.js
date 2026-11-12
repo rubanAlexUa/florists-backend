@@ -21,7 +21,7 @@ export const createPurchaseSchema = {
   [Segments.BODY]: Joi.array()
     .items({
       productId: Joi.string().custom(objectIdValidator).required(),
-      amount: Joi.number().integer().required(),
+      amount: Joi.number().integer().min(1).required(),
     })
     .min(1)
     .required(),
